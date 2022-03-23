@@ -1,0 +1,26 @@
+#!/bin/bash
+function run_sshagent()
+{
+	echo "alias echo=#" > ~/.bash/tmp/ssh-agent.tmp 
+	ssh-agent >> ~/.bash/tmp/ssh-agent.tmp
+	echo "unalias echo" >> ~/.bash/tmp/ssh-agent.tmp 
+	sleep 1
+	ssh-add
+}
+
+# check if an agent is running
+if ! source ~/.bash/tmp/ssh-agent.tmp ; then
+	#echo initiating ssh-ahent
+	echo "starting ssh-agent... [${SSH_AGENT_PID}]"
+	run_sshagent
+	source ~/.bash/tmp/ssh-agent.tmp
+else
+	ps_string=`ps | grep $SSH_AGENT_PID`
+	if [[ ${ps_string/*ssh-agent/ssh-agent} != 'ssh-agent' ]] ; then
+		#echo initiating ssh-ahent
+		echo "starting ssh-agent... [${SSH_AGENT_PID}]"
+		run_sshagent
+		source ~/.bash/tmp/ssh-agent.tmp
+	fi
+fi
+

@@ -1,0 +1,33 @@
+#======================================================================
+# File:                                                    bindings.sh
+# Written By:                    Alex A. Naanou <alex_nanou@yahoo.com>
+#======================================================================
+
+#===============================================================START==
+# internal - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -                              
+#bind -x '"\C-b": SAVE="no";logout'
+
+#mapping management:
+alias bind_save="bind -p > ~/.bash/bind_lst"
+alias bind_save_bak="bind -p > ~/.bash/bind_lst.bak"
+alias bind_clear="read -p 'This may render your shell unusable! are you shure? (yes/no): ' -n 4 answer;test $answer='yes'&&echo boo"
+alias bind_revert="bind -f ~/.bash/bind_lst.bak;cp ~/.bash/bind_lst.bak ~/.bash/bind_lst"
+
+
+# external - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+if [ -a ~/.bash/bind_lst ] ; then
+	bind -f ~/.bash/bind_lst
+else
+	echo "loading backup bindings..."
+	if [ -a ~/.bash/bind_lst.bak ] ; then
+		bind -f ~/.bash/bind_lst.bak
+	else
+		echo "loading default bindings..."
+		# put your default bindings here...
+		#
+		cp ~/.bash/bind_lst ~/.bash/bind_lst.bak
+	fi
+fi  
+
+#=================================================================END==
+true

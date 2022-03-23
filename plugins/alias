@@ -1,0 +1,52 @@
+#======================================================================
+# File:                                                   alias_man.sh
+# Written By:                    Alex A. Naanou <alex_nanou@yahoo.com>
+#======================================================================
+
+# start
+if [ $1 = "start" ] || [ $1 = 'login' ] ; then
+	if [ -z $__ALIAS_RUN__ ]; then
+		__ALIAS_RUN__='yes'
+
+		# internal 
+		#alias management:
+		alias alias_save="alias > ~/.bash/alias_lst"
+		alias alias_save_bak="alias > ~/.bash/alias_lst.bak"
+		alias alias_clear="mv ~/.bash/alias_lst ~/.bash/alias_lst.bak"
+		alias alias_revert="cp ~/.bash/alias_lst.bak ~/.bash/alias_lst"
+
+		# external 
+		if ! source ~/.bash/alias_lst ; then
+		# defaults
+			echo "loading backup aliases..."
+			if ! source ~/.bash/alias_lst.bak ; then
+				echo "loading default aliases..."
+				alias l="ls --color=auto"
+				alias ll="ls --color=auto -l"
+				alias scp="printf \"\e]2;scp in progress at  \${USER}@\${HOSTNAME}   (\`pwd\`)\a\";scp"
+				alias talk="printf \"\e]2;talking at  \${USER}@\${HOSTNAME}   (\`pwd\`)\a\";talk"
+				alias cdrdao='printf "\e]2;cdrdao at  \${USER}@${HOSTNAME}   (\`pwd\`)\a";cdrdao'
+				alias cdrecord='printf "\e]2;cdrecord at  \${USER}@${HOSTNAME}   (\`pwd\`)\a";cdrecord'
+				alias_save
+				cp ~/.bash/alias_lst ~/.bash/alias_lst.bak
+			fi
+		fi
+	fi
+fi
+if [ $1 = "logout" ] || [ $1 = "end" ] ; then
+	if [ -z $__ALIAS_UNRUN__ ]; then
+		__ALIAS_UNRUN__='yes'
+
+		if [[ $SAVE != "no" ]] ; then
+		  echo "saving settings..."
+		  alias_save
+		  bind_save
+		else
+		  echo "aborting save..."
+		  sleep 1
+		fi
+	fi
+fi
+
+#=================================================================END==
+true

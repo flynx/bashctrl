@@ -1,0 +1,40 @@
+#======================================================================
+# File:                                                      prompt.sh
+# Written By:                    Alex A. Naanou <alex_nanou@yahoo.com>
+#======================================================================
+
+
+#===============================================================START==
+# level indicator
+if [[ $TERM == 'screen' ]]; then
+	__SCREEN__="s "
+	export __SCREEN__
+fi
+if [[ $BASH_PROFILE == 1 ]] ; then
+	if [[ $SHLVL != 1 ]];then
+		if [[ -z $__LOGIN_PRESENT__ ]];then
+			__SHLVL__="($SHLVL)* "
+		else
+			__SHLVL__="($SHLVL*)* "
+		fi
+		export __LOGIN_PRESENT__="*"
+	fi
+	if [[ $TERM == xterm ]] ; then
+		PS1='\e]2;\u@\h    (\w)\a\n\e[32m\u@\h \e[34m$__SHLVL__\e[33m\w\e[0m\n\$ '
+	else
+		PS1='\n\e[32m\u@\h \e[34m$__SHLVL__\e[33m\w\e[0m\n\$ '
+	fi
+fi
+if [[ $BASHRC == 1 ]] ; then
+	if [[ $SHLVL != 1 ]];then
+		__SHLVL__="($SHLVL$__LOGIN_PRESENT__) "
+	fi
+	if [[ $TERM == xterm ]] ; then
+		PS1='\e]2;\u@\h    (\w)\a\n\e[32m\u@\h \e[34m$__SCREEN__$__SHLVL__\e[33m\w\e[0m\n\$ '
+	else
+		PS1='\n\e[32m\u@\h \e[34m$__SCREEN__$__SHLVL__\e[33m\w\e[0m\n\$ '
+	fi
+fi
+
+#=================================================================END==
+true

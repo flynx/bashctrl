@@ -1,0 +1,4 @@
+#!/bin/bash
+if [[ $BASH_LOGIN == 1 ]] || [[ $BASH_PROFILE == 1 ]] ;then
+	[ -f ~/.greet ] && cat ~/.greet || fortune
+fi
