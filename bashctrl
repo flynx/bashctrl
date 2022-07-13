@@ -49,7 +49,12 @@ DISABLED_PLUGINS=(
 #----------------------------------------------------------------------
 # helpers...
 
-SCRIPT=`basename $0`
+# when sourcing a script $0 is set to '-bash'...
+if [ "$0" = "-bash" ] ; then
+	SCRIPT=bashctrl
+else
+	SCRIPT=`basename $0`
+fi
 
 function printhelp(){ cat << EOF
 Bash control script
@@ -254,7 +259,9 @@ while true; do
 			for plugin in ${BASH_DIR}/events/$2/* ; do
 				[ $plugin == "README" ] \
 					&& continue
+				echo " --- $plugin: pre"
 				source $plugin $2
+				echo " --- $plugin: post"
 			done
 			shift
 			break
