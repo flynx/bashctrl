@@ -122,7 +122,7 @@ function update(){
 			|| echo "  Generating: $FILE..."
 		{
 			echo "# Lines added/maintained by $SCRIPT:"
-			echo "$SCRIPT run $EVT"
+			echo "source ${BIN_DIR}/${SCRIPT} run $EVT"
 			echo
 		} >> $FILE
 	else

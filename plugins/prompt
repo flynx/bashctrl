@@ -24,8 +24,7 @@ if [[ $BASH_PROFILE == 1 ]] ; then
 	else
 		PS1='\n\e[32m\u@\h \e[34m$__SHLVL__\e[33m\w\e[0m\n\$ '
 	fi
-fi
-if [[ $BASHRC == 1 ]] ; then
+else
 	if [[ $SHLVL != 1 ]];then
 		__SHLVL__="($SHLVL$__LOGIN_PRESENT__) "
 	fi
