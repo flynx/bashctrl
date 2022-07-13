@@ -15,6 +15,8 @@
 	&& export BASH_DIR=~/.bash/
 [ -z $BIN_DIR ] \
 	&& export BIN_DIR=~/bin/
+[ -z $RC_DIR ] \
+	&& export RC_DIR=~/
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,6 +93,7 @@ EOF
 }
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ANSWER_ALL=
 function confirm(){
 	local ans
@@ -108,6 +111,28 @@ function confirm(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX should explicitly check for events...
+function update(){
+	local FILE=$1
+	local EVT=$2
+	if [ ! -e $FILE ] \
+			|| [ -z "`cat $FILE | grep $SCRIPT`" ] ; then
+		[ -e $FILE ] \
+			&& echo "  Updating: $FILE..." \
+			|| echo "  Generating: $FILE..."
+		{
+			echo "# Lines added/maintained by $SCRIPT:"
+			echo "$SCRIPT run $EVT"
+			echo
+		} >> $FILE
+	else
+		echo "  Skipping: $FILE"
+	fi
+}
+
+
+
+#----------------------------------------------------------------------
 # handle arguments...
 
 if [ -z $1 ]; then
@@ -272,6 +297,13 @@ while true; do
 					echo "  $SCRIPT add $plugin"
 					$0 add $plugin
 				done
+			fi
+			# bash rc files...
+			if confirm "Setup configuration files?" ; then
+				update ${RC_DIR}/.bashrc start
+				update ${RC_DIR}/.bash_login login
+				update ${RC_DIR}/.bash_logout logout
+				# XXX where do we trigger end???
 			fi
 			;;
 	esac
