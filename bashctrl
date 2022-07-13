@@ -259,9 +259,7 @@ while true; do
 			for plugin in ${BASH_DIR}/events/$2/* ; do
 				[ $plugin == "README" ] \
 					&& continue
-				echo " --- $plugin: pre"
 				source $plugin $2
-				echo " --- $plugin: post"
 			done
 			shift
 			break
