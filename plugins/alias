@@ -15,6 +15,9 @@ if [ $1 = "start" ] || [ $1 = 'login' ] ; then
 		alias alias_clear="mv ~/.bash/alias_lst ~/.bash/alias_lst.bak"
 		alias alias_revert="cp ~/.bash/alias_lst.bak ~/.bash/alias_lst"
 
+		[ -e ~/.bash/alias_list ] \
+			&& touch ~/.bash/alias_list
+
 		# external 
 		if ! source ~/.bash/alias_lst ; then
 		# defaults

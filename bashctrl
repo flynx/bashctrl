@@ -49,7 +49,12 @@ DISABLED_PLUGINS=(
 #----------------------------------------------------------------------
 # helpers...
 
-SCRIPT=`basename $0`
+# when sourcing a script $0 is set to '-bash'...
+if [ "$0" = "-bash" ] ; then
+	SCRIPT=bashctrl
+else
+	SCRIPT=`basename $0`
+fi
 
 function printhelp(){ cat << EOF
 Bash control script
@@ -122,7 +127,7 @@ function update(){
 			|| echo "  Generating: $FILE..."
 		{
 			echo "# Lines added/maintained by $SCRIPT:"
-			echo "$SCRIPT run $EVT"
+			echo "source ${BIN_DIR}/${SCRIPT} run $EVT"
 			echo
 		} >> $FILE
 	else
